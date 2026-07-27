@@ -31,9 +31,16 @@
   sections.forEach(({ section }) => observer.observe(section));
 
   links.forEach((link) => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (event) => {
       const id = link.getAttribute('data-section');
-      if (id) setActive(id);
+      const target = id ? document.getElementById(id) : null;
+
+      if (!target) return;
+
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#${id}`);
+      setActive(id);
     });
   });
 })();
