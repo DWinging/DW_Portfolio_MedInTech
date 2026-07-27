@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Portfolio Main Page</title>
+
+  <style>
+    /* ==================================================
+       01. A4 Print Setting
+    ================================================== */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    body {
+      font-family:
+        'Pretendard',
+        'Malgun Gothic',
+        'Apple SD Gothic Neo',
+        sans-serif;
+
+      color: #2d3748;
+      line-height: 1.52;
+      font-size: 10.3pt;
+      background: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    p {
+      margin: 0;
+      word-break: keep-all;
+    }
+
+    /* ==================================================
+       02. Page
+    ================================================== */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    /* ==================================================
+       03. Cover Layout
+    ================================================== */
+    .cover-container {
+      display: flex;
+      flex-direction: column;
+
+      min-height: calc(297mm - 36mm);
+    }
+
+    .cover-hero {
+      margin-top: 8px;
+    }
+
+    .cover-label {
+      margin-bottom: 12px;
+
+      color: #319795;
+
+      font-size: 9.3pt;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .cover-title {
+      margin: 0 0 30px 0;
+
+      color: #1a365d;
+
+      font-size: 36pt;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1.4px;
+    }
+
+    /* ==================================================
+       04. Profile Header
+    ================================================== */
+    .profile-header {
+      margin-top: 0;
+    }
+
+    .profile-name {
+      margin: 0 0 8px 0;
+
+      color: #1a202c;
+
+      font-size: 14.5pt;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .profile-name span {
+      color: #718096;
+
+      font-size: 9.8pt;
+      font-weight: 500;
+    }
+
+    .profile-role {
+      margin: 0 0 13px 0;
+
+      color: #1a365d;
+
+      font-size: 10.7pt;
+      font-weight: 800;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    /* ==================================================
+       05. Contact
+    ================================================== */
+    .contact-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+
+      margin-top: 2px;
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+      align-items: baseline;
+
+      font-size: 9.4pt;
+      line-height: 1.45;
+    }
+
+    .contact-label {
+      color: #1a365d;
+
+      font-weight: 800;
+    }
+
+    .contact-link {
+      color: #4a5568;
+
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .pdf-download {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 12px;
+      border: 1px solid #319795;
+      border-radius: 6px;
+      color: #1a365d;
+      font-size: 9pt;
+      font-weight: 800;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    .pdf-download:hover {
+      background: #e6fffa;
+    }
+
+    .cover-description {
+      margin-top: 30px;
+    }
+
+    .cover-description p {
+      margin: 0 0 5px 0;
+
+      color: #4a5568;
+
+      font-size: 10.5pt;
+      font-weight: 600;
+      line-height: 1.55;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    .cover-divider {
+      margin: 34px 0 30px 0;
+
+      border-top: 2px solid #e2e8f0;
+    }
+
+    /* ==================================================
+       06. Contents
+    ================================================== */
+    .contents-section {
+      flex: 1;
+    }
+
+    .contents-title-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .contents-title {
+      margin: 0;
+
+      color: #1a365d;
+
+      font-size: 21pt;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .chapter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .chapter-item {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      align-items: start;
+
+      padding: 14px 0;
+
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .chapter-item:first-child {
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .chapter-number {
+      color: #319795;
+
+      font-size: 17pt;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+
+    .chapter-content h3 {
+      margin: 0 0 5px 0;
+
+      color: #1a365d;
+
+      font-size: 14pt;
+      font-weight: 900;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .chapter-content p {
+      margin: 0;
+
+      color: #4a5568;
+
+      font-size: 10.1pt;
+      font-weight: 500;
+      line-height: 1.5;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    .chapter-item:hover .chapter-content h3 {
+      color: #319795;
+    }
+
+    /* ==================================================
+       07. Screen Preview
+    ================================================== */
+    @media screen {
+      body {
+        background: #edf2f7;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+
+        margin: 20px auto;
+        padding: 18mm 16mm;
+
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    /* ==================================================
+       08. Mobile
+    ================================================== */
+    @media screen and (max-width: 900px) {
+      body {
+        font-size: 10pt;
+      }
+
+      .page {
+        width: calc(100% - 24px);
+        min-height: auto;
+
+        margin: 12px auto;
+        padding: 28px 22px;
+      }
+
+      .cover-container {
+        min-height: auto;
+      }
+
+      .cover-title {
+        font-size: 28pt;
+      }
+
+      .profile-name {
+        font-size: 13.5pt;
+      }
+
+      .profile-name span {
+        display: block;
+        margin-top: 2px;
+      }
+
+      .profile-role {
+        font-size: 10pt;
+      }
+
+      .contact-row {
+        grid-template-columns: 58px 1fr;
+
+        font-size: 9.2pt;
+      }
+
+      .contents-title {
+        font-size: 18pt;
+      }
+
+      .chapter-item {
+        grid-template-columns: 44px 1fr;
+      }
+
+      .chapter-number {
+        font-size: 15pt;
+      }
+
+      .chapter-content h3 {
+        font-size: 12.4pt;
+      }
+    }
+
+    /* ==================================================
+       09. Print Mode
+    ================================================== */
+    @media print {
+      html,
+      body,
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      body {
+        background: #ffffff !important;
+        counter-reset: print-page;
+      }
+
+      .page {
+        width: auto;
+        min-height: auto;
+
+        margin: 0;
+        padding: 18mm 16mm;
+
+        position: relative;
+        box-shadow: none;
+        counter-increment: print-page;
+
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .page::after {
+        content: counter(print-page);
+        position: absolute;
+        right: 16mm;
+        bottom: 7mm;
+        color: #718096;
+        font-size: 8pt;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .cover-label,
+      .chapter-number {
+        color: #319795 !important;
+      }
+
+      .cover-title,
+      .contents-title,
+      .chapter-content h3,
+      .profile-role,
+      .contact-label {
+        color: #1a365d !important;
+      }
+
+      .contact-link {
+        color: #4a5568 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================================================
+       MAIN PAGE
+       기술 포트폴리오 표지 / CONTENTS
+  ================================================== -->
+  <div class="page" id="top">
+
+    <div class="cover-container">
+
+      <!-- Hero -->
+      <section class="cover-hero">
+        <div class="cover-label">
+          TECHNICAL PORTFOLIO
+        </div>
+
+        <h1 class="cover-title">
+          PORTFOLIO
+        </h1>
+
+        <div class="profile-header">
+          <h2 class="profile-name">
+            최동욱 <span>(Backend &amp; QA Engineering)</span>
+          </h2>
+
+          <p class="profile-role">
+            문제 해결 능력을 바탕으로 코드 최적화와 품질 개선에 집중하는 개발자
+          </p>
+
+          <div class="contact-list">
+            <div class="contact-row">
+              <span class="contact-label">Email</span>
+              <a href="mailto:choi.dongwook20@gmail.com" class="contact-link">
+                choi.dongwook20@gmail.com
+              </a>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-label">GitHub</span>
+              <a href="https://github.com/DWinging" target="_blank" rel="noopener noreferrer" class="contact-link">
+                github.com/DWinging
+              </a>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-label">Velog</span>
+              <a href="https://velog.io/@dong20/series" target="_blank" rel="noopener noreferrer" class="contact-link">
+                velog.io/@dong20
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="cover-divider"></div>
+
+      <!-- Contents -->
+      <section class="contents-section">
+        <div class="contents-title-row">
+          <h2 class="contents-title">
+            CONTENTS
+          </h2>
+
+          <a
+            class="pdf-download web-only"
+            href="docs/choidongwook_Portfolio.pdf"
+            download
+          >
+            PDF Download
+          </a>
+        </div>
+
+        <div class="cover-description">
+          <p>
+            프로젝트 구현 과정과 문제 해결 경험을 중심으로 정리한 기술 포트폴리오입니다.
+          </p>
+        </div>
+
+        <div class="chapter-list">
+
+          <a href="#project-01" class="chapter-item">
+            <div class="chapter-number">
+              01
+            </div>
+
+            <div class="chapter-content">
+              <h3>
+                GYUL
+              </h3>
+
+              <p>
+                AI 기반 레벨별 테크 큐레이션 서비스의 QA 수행 경험
+              </p>
+            </div>
+          </a>
+
+          <a href="#project-02" class="chapter-item">
+            <div class="chapter-number">
+              02
+            </div>
+
+            <div class="chapter-content">
+              <h3>
+                알고리즘 문제 해결 기반의 코드 최적화 경험
+              </h3>
+
+              <p>
+                문제 해결을 넘어, 실행 성능과 코드 최적화 관점으로 확장한 경험
+              </p>
+            </div>
+          </a>
+
+          <a href="#project-03" class="chapter-item">
+            <div class="chapter-number">
+              03
+            </div>
+
+            <div class="chapter-content">
+              <h3>
+                BOJ Random Picker / Algo API
+              </h3>
+
+              <p>
+		문제 선택 시간을 줄이기 위한 알고리즘 추천 도구 개발 경험
+              </p>
+            </div>
+          </a>
+
+          <a href="#project-04" class="chapter-item">
+            <div class="chapter-number">
+              04
+            </div>
+
+            <div class="chapter-content">
+              <h3>
+                Animal Homepage
+              </h3>
+
+              <p>
+                JSP 구현 경험을 바탕으로 정리한 MVC 구조 개선 관점
+              </p>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

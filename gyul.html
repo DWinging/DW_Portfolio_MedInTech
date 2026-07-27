@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>01. 결(GYUL) - AI 기반 레벨별 테크 큐레이션 서비스</title>
+
+  <style>
+    /* =========================
+       A4 Print Setting
+    ========================= */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html,
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family:
+        'Pretendard',
+        'Malgun Gothic',
+        'Apple SD Gothic Neo',
+        sans-serif;
+      color: #2d3748;
+      line-height: 1.52;
+      font-size: 10.3pt;
+      background: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      text-align: justify;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    strong {
+      color: #1a365d;
+      font-weight: 700;
+    }
+
+    /* =========================
+       Page
+    ========================= */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    /* =========================
+       Header
+    ========================= */
+    .header-container {
+      margin-bottom: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 9px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background-color: #e6fffa;
+      color: #234e52;
+      font-size: 9.1pt;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .badge.award {
+      background-color: #fffaf0;
+      color: #744210;
+    }
+
+    .badge.status {
+      background-color: #ebf8ff;
+      color: #2a4365;
+    }
+
+    .main-title {
+      margin: 0 0 6px 0;
+      color: #1a365d;
+      font-size: 19.5pt;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.7px;
+    }
+
+    .subtitle {
+      margin: 0 0 9px 0;
+      color: #4a5568;
+      font-size: 11pt;
+      font-weight: 600;
+    }
+
+    .header-line {
+      margin-top: 9px;
+      border-top: 2px solid #319795;
+    }
+
+    /* =========================
+       Section
+    ========================= */
+    .section {
+      margin-top: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .section.compact {
+      margin-top: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 9px 0;
+      padding-left: 8px;
+      border-left: 4px solid #319795;
+      color: #1a365d;
+      font-size: 12.8pt;
+      font-weight: 700;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* =========================
+       Tables
+    ========================= */
+    .overview-table,
+    .basic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+
+    .overview-table {
+      margin-bottom: 14px;
+    }
+
+    .overview-table td,
+    .basic-table th,
+    .basic-table td {
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+
+    .overview-table td.label {
+      width: 16%;
+      background: #f7fafc;
+      color: #4a5568;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .overview-table td.value {
+      color: #2d3748;
+    }
+
+    .basic-table th {
+      background: #f7fafc;
+      color: #1a365d;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .basic-table td:first-child {
+      width: 24%;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       Cards
+    ========================= */
+    .card {
+      margin-bottom: 9px;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      background: #f8fafc;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .card-title {
+      margin: 0 0 6px 0;
+      color: #1a365d;
+      font-size: 11.1pt;
+      font-weight: 800;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .compact-list li {
+      margin-bottom: 3px;
+    }
+
+    .case-step {
+      margin-bottom: 6px;
+    }
+
+    .case-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .case-step-label {
+      display: inline-block;
+      margin-bottom: 2px;
+      color: #319795;
+      font-size: 9.5pt;
+      font-weight: 800;
+    }
+
+    /* =========================
+       Collaboration Flow
+    ========================= */
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin-top: 7px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .workflow-step {
+      position: relative;
+      min-height: 76px;
+      padding: 9px 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      background: #f8fafc;
+    }
+
+    .workflow-step::after {
+      content: "→";
+      position: absolute;
+      top: 50%;
+      right: -8px;
+      z-index: 2;
+      transform: translateY(-50%);
+      color: #319795;
+      font-weight: 800;
+    }
+
+    .workflow-step:last-child::after {
+      display: none;
+    }
+
+    .workflow-number {
+      display: block;
+      margin-bottom: 3px;
+      color: #319795;
+      font-size: 8.2pt;
+      font-weight: 800;
+    }
+
+    .workflow-title {
+      display: block;
+      margin-bottom: 3px;
+      color: #1a365d;
+      font-size: 9.1pt;
+      font-weight: 800;
+    }
+
+    .workflow-desc {
+      color: #4a5568;
+      font-size: 7.8pt;
+      line-height: 1.35;
+    }
+
+    /* =========================
+       Note
+    ========================= */
+    .note-box {
+      margin-top: 9px;
+      padding: 10px 12px;
+      border-left: 4px solid #319795;
+      background: #f8fafc;
+      color: #4a5568;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* =========================
+       Result Layout
+    ========================= */
+    .result-layout {
+      display: grid;
+      grid-template-columns: 2.35fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+      margin: 8px 0 9px 0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .result-image-box {
+      height: 235px;
+      padding: 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .result-image-box img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .result-side-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .result-metric-card {
+      flex: 1;
+      min-height: 56px;
+      padding: 10px 11px;
+      border-radius: 8px;
+      background: #1f2937;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .result-metric-card .value {
+      margin-bottom: 5px;
+      color: #ffffff;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.4px;
+    }
+
+    .result-metric-card .label {
+      margin-bottom: 3px;
+      color: #ffffff;
+      font-size: 7.4pt;
+      font-weight: 800;
+    }
+
+    .result-metric-card .desc {
+      color: #cbd5e0;
+      font-size: 6.4pt;
+      line-height: 1.35;
+    }
+
+    /* =========================
+       Links
+    ========================= */
+    .link-box {
+      margin-top: 8px;
+      padding: 9px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      background: #f8fafc;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 9.8pt;
+    }
+
+    .link-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .link-label {
+      width: 165px;
+      flex-shrink: 0;
+      color: #2d3748;
+      font-weight: 800;
+    }
+
+    .link-url {
+      color: #319795;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* =========================
+       Screen Preview
+    ========================= */
+    @media screen {
+      body {
+        background: #edf2f7;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 20px auto;
+        padding: 18mm 16mm;
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    /* =========================
+       Responsive
+    ========================= */
+    @media screen and (max-width: 900px) {
+      .page {
+        width: calc(100% - 24px);
+        min-height: auto;
+        margin: 12px auto;
+        padding: 28px 22px;
+      }
+
+      .summary-grid,
+      .result-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-step::after {
+        display: none;
+      }
+
+      .result-image-box {
+        height: auto;
+        min-height: 230px;
+      }
+
+      .overview-table,
+      .overview-table tbody,
+      .overview-table tr,
+      .overview-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .overview-table td.label {
+        width: 100%;
+      }
+    }
+
+    /* =========================
+       Print Mode
+    ========================= */
+    @media print {
+
+      html,
+      body,
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      body {
+        background: #ffffff !important;
+        counter-reset: print-page;
+      }
+
+      .page {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 18mm 16mm;
+        position: relative;
+        box-shadow: none;
+        counter-increment: print-page;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .page::after {
+        content: counter(print-page);
+        position: absolute;
+        right: 16mm;
+        bottom: 7mm;
+        color: #718096;
+        font-size: 8pt;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .badge {
+        background-color: #e6fffa !important;
+        color: #234e52 !important;
+      }
+
+      .badge.award {
+        background-color: #fffaf0 !important;
+        color: #744210 !important;
+      }
+
+      .badge.status {
+        background-color: #ebf8ff !important;
+        color: #2a4365 !important;
+      }
+
+      .overview-table td.label,
+      .basic-table th {
+        background-color: #f7fafc !important;
+        color: #1a365d !important;
+      }
+
+      .card,
+      .workflow-step,
+      .note-box,
+      .link-box,
+      .result-image-box {
+        background-color: #f8fafc !important;
+      }
+
+      .result-metric-card {
+        background-color: #1f2937 !important;
+        color: #ffffff !important;
+      }
+
+      .result-metric-card .value,
+      .result-metric-card .label {
+        color: #ffffff !important;
+      }
+
+      .result-metric-card .desc {
+        color: #cbd5e0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page">
+
+    <div class="header-container">
+      <div class="badge-row">
+        <span class="badge">Quality Assurance</span>
+        <span class="badge award">🏆 SSAFY 서울 7반 최우수상</span>
+        <span class="badge status">Completed</span>
+      </div>
+
+      <h1 class="main-title">
+        01. AI 기반 레벨별 테크 큐레이션 서비스 : 결(GYUL)
+      </h1>
+
+      <p class="subtitle">
+        QA 전담으로 테스트 설계부터 결함 공유·재검증까지 수행
+      </p>
+
+      <div class="header-line"></div>
+    </div>
+
+    <table class="overview-table">
+      <tr>
+        <td class="label">프로젝트명</td>
+        <td class="value">결(GYUL)</td>
+
+        <td class="label">개발 기간</td>
+        <td class="value">2026.05.22 ~ 2026.06.25</td>
+      </tr>
+
+      <tr>
+        <td class="label">개발 인원</td>
+        <td class="value">3인 (FE 1 · BE 1 · QA 1)</td>
+
+        <td class="label">담당 역할</td>
+        <td class="value">QA 전담</td>
+      </tr>
+
+      <tr>
+        <td class="label">핵심 결과</td>
+        <td class="value" colspan="3">
+          테스트 케이스 206건 전건 수행 · 유효 성공률 98.9% · 서울 7반 최우수상
+        </td>
+      </tr>
+    </table>
+
+    <section class="section compact">
+      <h2 class="section-title">프로젝트와 QA 범위</h2>
+
+      <p>
+        결(GYUL)은 하나의 기술 아티클을
+        <strong>사용자 수준(Lv1~Lv4)</strong>에 맞게 재구성하고,
+        학습 관리와 기술 토론 기능을 제공하는
+        <strong>AI 기반 테크 큐레이션 서비스</strong>입니다.
+      </p>
+
+      <p>
+        QA 전담으로 참여해 회원가입, 로그인, 아티클, 컬렉션,
+        아레나, 구독, 알림, 프로필 등
+        <strong>13개 기능 도메인</strong>을 구분하고,
+        사용자 시나리오 기반의 정상·예외·경계값 테스트를 설계했습니다.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">내가 수행한 QA 업무</h2>
+
+      <div class="summary-grid">
+
+        <div class="card">
+          <h3 class="card-title">테스트 설계와 문서화</h3>
+
+          <ul class="compact-list">
+            <li>실제 사용자 흐름을 기준으로 기능별 테스트 범위 정의</li>
+            <li>테스트 케이스 <strong>206건</strong> 작성 및 전건 수행</li>
+            <li>입력값, 예상 결과, 실제 결과, 상태, 결함 로그를 Google Sheet에 기록</li>
+            <li>검증 결과를 날짜별로 누적해 이전 결과와 수정 이력 추적</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">결함 공유와 재검증</h3>
+
+          <ul class="compact-list">
+            <li>발견한 결함의 재현 조건과 실제 결과를 GitHub Issue로 공유</li>
+            <li>연결된 PR에서 변경 내용을 확인한 뒤 동일 시나리오 재수행</li>
+            <li>새로운 문제가 발생하면 검증 근거를 추가해 Issue Re-open</li>
+            <li>수정된 기능과 연결된 사용자 흐름의 사이드 이펙트 확인</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">협업 기반 결함 관리 흐름</h2>
+
+      <div class="workflow">
+
+        <div class="workflow-step">
+          <span class="workflow-number">01</span>
+          <span class="workflow-title">시나리오 검증</span>
+          <span class="workflow-desc">
+            정상·예외·경계값 조건으로 기능 동작 확인
+          </span>
+        </div>
+
+        <div class="workflow-step">
+          <span class="workflow-number">02</span>
+          <span class="workflow-title">근거 기록</span>
+          <span class="workflow-desc">
+            실제 결과와 재현 순서를 테스트 문서에 기록
+          </span>
+        </div>
+
+        <div class="workflow-step">
+          <span class="workflow-number">03</span>
+          <span class="workflow-title">Issue 공유</span>
+          <span class="workflow-desc">
+            기대 결과와 실제 결과를 개발 담당자에게 전달
+          </span>
+        </div>
+
+        <div class="workflow-step">
+          <span class="workflow-number">04</span>
+          <span class="workflow-title">수정 확인</span>
+          <span class="workflow-desc">
+            연결된 PR과 변경 내용을 확인하고 재테스트 준비
+          </span>
+        </div>
+
+        <div class="workflow-step">
+          <span class="workflow-number">05</span>
+          <span class="workflow-title">재검증</span>
+          <span class="workflow-desc">
+            동일 시나리오 재수행, 문제 발생 시 Re-open
+          </span>
+        </div>
+
+      </div>
+
+      <div class="note-box">
+        <strong>협업 방식:</strong>
+        결함을 단순히 전달하는 데 그치지 않고,
+        개발자가 동일한 상황을 확인할 수 있도록 재현 조건과 검증 결과를 함께 공유했습니다.
+        수정 이후에는 동일 시나리오와 연결 기능을 다시 확인했습니다.
+      </div>
+    </section>
+
+  </div>
+
+
+  <!-- PAGE 2 -->
+  <div class="page">
+
+    <div class="header-container">
+      <div class="badge-row">
+        <span class="badge">Validation Case</span>
+        <span class="badge status">QA Retrospective</span>
+      </div>
+
+      <h1 class="main-title">
+        대표 검증 사례와 QA 회고
+      </h1>
+
+      <p class="subtitle">
+        비즈니스 로직 결함을 발견하고 수정 결과까지 재검증한 경험
+      </p>
+
+      <div class="header-line"></div>
+    </div>
+
+    <section class="section compact">
+      <h2 class="section-title">대표 검증 사례</h2>
+
+      <div class="card">
+        <h3 class="card-title">Arena 베팅 포인트 정산 오류</h3>
+
+        <div class="case-step">
+          <span class="case-step-label">문제 발견</span>
+          <p>
+            베팅 결과가 아닌 <strong>찬성·반대 참여 인원 비율</strong>에 따라
+            포인트가 분배되는 오류를 발견했습니다.
+          </p>
+        </div>
+
+        <div class="case-step">
+          <span class="case-step-label">공유 및 재검증</span>
+          <p>
+            잘못된 계산 로직과 재현 조건을 GitHub Issue로 공유하고,
+            수정 후 동일 시나리오를 재수행해 정상 동작을 확인했습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <h2 class="section-title">테스트 운영 결과</h2>
+
+      <div class="result-layout">
+
+        <div class="result-image-box">
+          <img src="./assets/images/gyul-test-result.jpg" alt="GYUL 테스트 케이스 수행 결과" />
+        </div>
+
+        <div class="result-side-metrics">
+
+          <div class="result-metric-card">
+            <div class="value">206건</div>
+            <div class="label">테스트 케이스</div>
+            <div class="desc">
+              13개 기능 도메인 대상 설계 및 수행
+            </div>
+          </div>
+
+          <div class="result-metric-card">
+            <div class="value">100%</div>
+            <div class="label">테스트 수행률</div>
+            <div class="desc">
+              계획한 테스트 케이스 전건 수행
+            </div>
+          </div>
+
+          <div class="result-metric-card">
+            <div class="value">98.9%</div>
+            <div class="label">유효 성공률</div>
+            <div class="desc">
+              Block 제외 181건 중 179건 Pass
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <h2 class="section-title">느낀 점과 한계</h2>
+
+      <div class="card">
+        <ul class="compact-list">
+          <li>
+            구체적인 기능 명세가 부족해 구현 결과를 기준으로 테스트를 설계하면서,
+            요구사항이 변경될 때마다
+            <strong>검증 기준도 함께 수정</strong>해야 했습니다.
+          </li>
+
+          <li>
+            Google Sheet에 테스트 결과와 결함 로그를 누적했지만,
+            전체 진행 상황과 테스트 케이스별 결함 상태를
+            <strong>한눈에 추적하기 어려운 한계</strong>가 있었습니다.
+          </li>
+
+          <li>
+            로그인·회원가입 시나리오를 Playwright로 자동화했지만
+            기능 변경에 따라 테스트 코드 수정이 반복되어,
+            자동화 전에
+            <strong>안정된 검증 기준과 반복 가치가 있는 범위</strong>를
+            선정해야 한다는 점을 배웠습니다.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <h2 class="section-title">참고 자료</h2>
+
+      <div class="link-box">
+        <div class="link-row">
+          <span class="link-label">📊 Test Case Sheet</span>
+
+          <a class="link-url"
+            href="https://docs.google.com/spreadsheets/d/129mAV0xWps5LJrS9kNRcDs_nmDXqA18Epn5W4JC5KEU/edit?usp=sharing"
+            target="_blank" rel="noopener noreferrer">
+            Google Sheets
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>03. 알고리즘 문제 해결 기반의 코드 최적화 경험</title>
+
+  <style>
+    /* =========================
+       A4 Print Setting
+    ========================= */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html,
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      color: #2d3748;
+      line-height: 1.55;
+      font-size: 10.5pt;
+      background: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      text-align: justify;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 3px;
+    }
+
+    strong {
+      font-weight: 700;
+      color: #1a365d;
+    }
+
+    /* =========================
+       Page
+    ========================= */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    .no-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* =========================
+       Header
+    ========================= */
+    .header-container {
+      margin-bottom: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #e6fffa;
+      color: #234e52;
+      font-size: 9.3pt;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      line-height: 1.3;
+    }
+
+    .badge.award {
+      background-color: #fffaf0;
+      color: #744210;
+    }
+
+    .badge.status {
+      background-color: #ebf8ff;
+      color: #2a4365;
+    }
+
+    .main-title {
+      font-size: 18pt;
+      line-height: 1.25;
+      color: #1a365d;
+      margin: 0 0 6px 0;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .subtitle {
+      font-size: 9.2pt;
+      color: #4a5568;
+      margin: 0 0 10px 0;
+      font-weight: 600;
+    }
+
+    .header-line {
+      border-top: 2px solid #319795;
+      margin-top: 10px;
+    }
+
+    /* =========================
+       Section
+       주의: 여기에는 break-inside: avoid 걸지 않음
+    ========================= */
+    .section {
+      margin-top: 14px;
+    }
+
+    .section.compact {
+      margin-top: 10px;
+    }
+
+    .section-title {
+      font-size: 13pt;
+      color: #1a365d;
+      border-left: 4px solid #319795;
+      padding-left: 8px;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* =========================
+       Overview Table
+    ========================= */
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.2pt;
+      margin-bottom: 12px;
+    }
+
+    .overview-table td {
+      border: 1px solid #e2e8f0;
+      padding: 7px 10px;
+      vertical-align: top;
+    }
+
+    .overview-table td.label {
+      width: 16%;
+      background: #f7fafc;
+      font-weight: 700;
+      color: #4a5568;
+      white-space: nowrap;
+    }
+
+    .overview-table td.value {
+      color: #2d3748;
+    }
+
+    /* =========================
+       Metric Cards
+    ========================= */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 7px 0 8px 0;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      padding: 9px 7px;
+      text-align: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .metric-value {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #1a365d;
+      line-height: 1.1;
+      margin-bottom: 3px;
+      letter-spacing: -0.4px;
+    }
+
+    .metric-label {
+      font-size: 8.8pt;
+      color: #718096;
+      font-weight: 700;
+    }
+
+    /* =========================
+       Case Box
+    ========================= */
+    .case-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .case-title {
+      color: #1a365d;
+      font-size: 11.3pt;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    /* =========================
+       Result Table
+    ========================= */
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.6pt;
+      margin: 7px 0 8px 0;
+    }
+
+    .result-table th,
+    .result-table td {
+      border: 1px solid #e2e8f0;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .result-table th {
+      background: #f7fafc;
+      color: #1a365d;
+      font-weight: 800;
+    }
+
+    .result-table td:first-child {
+      font-weight: 700;
+      color: #4a5568;
+      background: #ffffff;
+    }
+
+    .result-table .emphasis {
+      color: #319795;
+      font-weight: 800;
+    }
+
+    /* =========================
+       Links
+    ========================= */
+    .reference-section {
+      margin-top: 8px;
+    }
+
+    .link-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 8px 10px;
+      margin-top: 6px;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+      font-size: 9.2pt;
+      line-height: 1.35;
+    }
+
+    .link-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .link-label {
+      width: 145px;
+      color: #2d3748;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .link-url {
+      color: #319795;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* =========================
+       Screen Preview
+    ========================= */
+    @media screen {
+      body {
+        background: #edf2f7;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 20px auto;
+        padding: 18mm 16mm;
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      }
+    }
+
+    /* =========================
+       Print Mode
+    ========================= */
+    @media print {
+      html,
+      body,
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      body {
+        background: #ffffff !important;
+        counter-reset: print-page;
+      }
+
+      .page {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 18mm 16mm;
+        position: relative;
+        box-shadow: none;
+        counter-increment: print-page;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .page::after {
+        content: counter(print-page);
+        position: absolute;
+        right: 16mm;
+        bottom: 7mm;
+        color: #718096;
+        font-size: 8pt;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .badge {
+        background-color: #e6fffa !important;
+        color: #234e52 !important;
+      }
+
+      .badge.award {
+        background-color: #fffaf0 !important;
+        color: #744210 !important;
+      }
+
+      .badge.status {
+        background-color: #ebf8ff !important;
+        color: #2a4365 !important;
+      }
+
+      .overview-table td.label,
+      .result-table th,
+      .case-box,
+      .link-box {
+        background-color: #f8fafc !important;
+      }
+
+      .metric-card {
+        background-color: #ffffff !important;
+      }
+
+      .result-table .emphasis {
+        color: #319795 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <div class="header-container">
+      <div class="badge-row">
+        <span class="badge">Engineering & Optimization</span>
+        <span class="badge award">PCCP Java Lv4</span>
+        <span class="badge status">Baekjoon Platinum II</span>
+      </div>
+
+      <h1 class="main-title">03. 알고리즘 문제 해결 기반의 코드 최적화 경험</h1>
+      <p class="subtitle">문제 해결을 넘어, 실행 성능과 시스템 동작 원리를 분석하는 엔지니어링 접근</p>
+      <div class="header-line"></div>
+    </div>
+
+    <table class="overview-table">
+      <tr>
+        <td class="label">기간</td>
+        <td class="value">2023.04 ~ 현재</td>
+        <td class="label">사용 언어</td>
+        <td class="value">Java(주력), Python, Kotlin, C++</td>
+      </tr>
+      <tr>
+        <td class="label">플랫폼</td>
+        <td class="value">Baekjoon · Programmers · SWEA · LeetCode</td>
+        <td class="label">핵심 성과</td>
+        <td class="value">PCCP Java Lv4 · 삼성 B형 · Baekjoon Platinum II</td>
+      </tr>
+    </table>
+
+    <section class="section compact">
+      <h2 class="section-title">역량 기술 개요</h2>
+      <ul>
+        <li>단순히 알고리즘 문제를 해결하는 데 그치지 않고, <strong>실행 성능</strong>과 <strong>시스템 동작 원리</strong>를 분석·검증하는 엔지니어링 접근 방식을 지향합니다.</li>
+        <li>대규모 반복 연산 환경에서 <strong>조건 분기 구조</strong>, 자료구조 접근 방식, 객체 생성 비용 등 런타임에 영향을 주는 요소를 분석합니다.</li>
+        <li><strong>가설 수립 → 코드 개선 → 성능 검증 → 기술 자산화</strong>의 과정을 반복하며 문제 해결 역량을 발전시키고 있습니다.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">공학적 접근 방식</h2>
+      <ul>
+        <li>근거 중심의 문제 해결을 위해 <strong>성능 병목 원인</strong>을 분석하고 가설을 수립한 뒤 실험을 통해 검증합니다.</li>
+        <li>실행 흐름과 자료구조의 동작 원리를 고려하여 <strong>불필요한 연산과 메모리 사용</strong>을 최소화합니다.</li>
+        <li>성능과 가독성의 균형을 고려하여 <strong>Hotspot 구간</strong>에만 선택적으로 최적화를 적용합니다.</li>
+        <li>GitHub, log.md, summary.md, Velog를 활용하여 분석 과정과 개선 결과를 <strong>지속적으로 문서화</strong>합니다.</li>
+      </ul>
+    </section>
+
+    <section class="section no-break">
+      <h2 class="section-title">핵심 성과</h2>
+
+      <div class="case-box">
+        <div class="case-title">조건 분기 재설계를 통한 알고리즘 성능 최적화</div>
+
+        <p>
+          BOJ 1854번 <strong>K번째 최단 경로</strong> 문제에서
+          <strong>조건 분기 구조</strong>와 PriorityQueue 접근 방식을 재설계하여
+          <strong>실행 시간과 메모리 사용량</strong>을 개선했습니다.
+        </p>
+
+        <table class="result-table">
+          <tr>
+            <th>항목</th>
+            <th>개선 전</th>
+            <th>개선 후</th>
+            <th>개선 효과</th>
+          </tr>
+          <tr>
+            <td>실행 시간</td>
+            <td>1132ms</td>
+            <td>596ms</td>
+            <td class="emphasis">약 47% 단축</td>
+          </tr>
+          <tr>
+            <td>메모리</td>
+            <td>63MB</td>
+            <td>40MB</td>
+            <td class="emphasis">약 35% 절감</td>
+          </tr>
+        </table>
+
+	<ul>
+	  <li><strong>PriorityQueue 연산 최소화</strong> 및 조건 분기 구조 재설계</li>
+	  <li>동일 환경 반복 제출을 통한 <strong>성능 개선 검증</strong></li>
+	  <li>개선 원인과 분석 결과를 <strong>기술 블로그로 문서화</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section compact reference-section">
+      <h2 class="section-title">참고 자료</h2>
+
+      <div class="link-box">
+        <div class="link-row">
+          <span class="link-label">📂 GitHub Repository</span>
+          <a class="link-url" href="https://github.com/DWinging/Algorithm" target="_blank" rel="noopener noreferrer">
+            Algorithm Repository
+          </a>
+        </div>
+        <div class="link-row">
+          <span class="link-label">📝 Velog Series</span>
+          <a class="link-url" href="https://velog.io/@dong20/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98" target="_blank" rel="noopener noreferrer">
+            알고리즘 풀이 및 회고 시리즈
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
